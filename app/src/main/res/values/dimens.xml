@@ -1,0 +1,14 @@
+<resources>
+
+    <!-- Default screen margins, per the Android Design guidelines. -->
+
+    <dimen name="px0">0dip</dimen>
+    <dimen name="px0.5">0.5dip</dimen>
+    <dimen name="px3">3dip</dimen>
+    <dimen name="px4">4dip</dimen>
+    <dimen name="px5">5dip</dimen>
+    <dimen name="px8">8dip</dimen>
+    <dimen name="px50">50dip</dimen>
+
+    <dimen name="text_size_11">11sp</dimen>
+</resources>

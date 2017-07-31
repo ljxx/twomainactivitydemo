@@ -2,13 +2,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.ylx.twomainactivitydemo.mainfragment.CompeteToBuyFragment">
+    tools:context="com.ylx.twomainactivitydemo.mallchildfragment.MallAccountFragment">
 
     <!-- TODO: Update blank fragment layout -->
     <TextView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:gravity="center"
-        android:text="竞买购物" />
+        android:text="商城-账户页" />
 
 </FrameLayout>

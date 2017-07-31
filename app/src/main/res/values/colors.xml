@@ -3,4 +3,12 @@
     <color name="colorPrimary">#3F51B5</color>
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
+
+    <color name="white_bg">#ffffff</color>
+    <color name="black_text">#282828</color>
+    <color name="gray_tet">#aaaaaa</color>
+
+    <!-- 底栏字体颜色 -->
+    <color name="footer_text_color_normal">#666666</color>
+    <color name="footer_text_color_selected">#ffffff</color>
 </resources>
