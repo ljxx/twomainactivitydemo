@@ -3,29 +3,156 @@ package com.ylx.twomainactivitydemo.mainfragment;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 
 import com.ylx.twomainactivitydemo.R;
+import com.ylx.twomainactivitydemo.competechildfragment.CompeteCollectionFragment;
+import com.ylx.twomainactivitydemo.competechildfragment.CompeteHomeFragment;
+import com.ylx.twomainactivitydemo.competechildfragment.CompeteSubscribeFragment;
+import com.ylx.twomainactivitydemo.competechildfragment.CompeteTradeFragment;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 
 /**
  * A simple {@link Fragment} subclass.
  */
 public class CompeteToBuyFragment extends Fragment {
+    private RadioGroup mRadioGroup;
 
+    private List<String> mFragmentTags;
 
-    public CompeteToBuyFragment() {
-        // Required empty public constructor
-    }
+    private int mCurrentIndex;
+    private final String CURRENTINDEX = "mCurrentIndex";
+    private final int FRAGMENT_ZERO = 0;
+    private final int FRAGMENT_FIRST = 1;
+    private final int FRAGMENT_SECOND = 2;
+    private final int FRAGMENT_THREE = 3;
+    private FragmentManager mFragmentManager;
 
+    private final int CART_INDEX = 2;
+    private final int HOME_INDEX = 0;
+    private final String IS_SHOW_BACK = "is_show_back";
+    private final String MALL_CURRENT_FRAGMENT = "mall_current_fragment";
+
+    private View mView;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_compete_to_buy, container, false);
+        mView = inflater.inflate(R.layout.fragment_compete_to_buy, container, false);
+        mFragmentManager = getChildFragmentManager();
+        initData(savedInstanceState);
+        /**
+         * 初始化view
+         */
+        initView();
+        return mView;
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putInt(CURRENTINDEX,mCurrentIndex);
+    }
+
+    private void initData(Bundle savedInstanceState) {
+        mFragmentTags = new ArrayList<String>(Arrays.asList("MallHomeFragment","MallCatergoryFragment","MallCartFragment","SafetyFragment","AccountFragment"));
+        mCurrentIndex = FRAGMENT_ZERO; //默认首页0
+        if(savedInstanceState != null){
+            mCurrentIndex = savedInstanceState.getInt(CURRENTINDEX);
+            hindSaveFragment();
+        }
+    }
+
+    /**
+     * 隐藏保存Fragment
+     */
+    private void hindSaveFragment() {
+        Fragment mFragment = mFragmentManager.findFragmentByTag(mFragmentTags.get(mCurrentIndex));
+        if(mFragment != null){
+            mFragmentManager.beginTransaction().hide(mFragment).commit();
+        }
+    }
+
+    /**
+     * 初始化view
+     */
+    private void initView() {
+        mRadioGroup = (RadioGroup) mView.findViewById(R.id.mRadioGroup);
+        ((RadioButton)mRadioGroup.getChildAt(mCurrentIndex)).setChecked(true);
+        mRadioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup radioGroup, int position) {
+                switch (position){
+                    case R.id.mRBHome:
+                        mCurrentIndex = FRAGMENT_ZERO;
+                        break;
+                    case R.id.mRBMap:
+                        mCurrentIndex = FRAGMENT_FIRST;
+                        break;
+                    case R.id.mRBCenter:
+                        mCurrentIndex = FRAGMENT_SECOND;
+                        break;
+                    case R.id.mRBFind:
+                        mCurrentIndex = FRAGMENT_THREE;
+                        break;
+                    default:break;
+                }
+                showFragment();
+            }
+        });
+        showFragment();
+    }
+
+    /**
+     * 展示fragment
+     */
+    private void showFragment() {
+        Fragment fragment = mFragmentManager.findFragmentByTag(mFragmentTags.get(mCurrentIndex));
+        if(fragment == null){
+            fragment = initFragment(mCurrentIndex);
+        }
+
+        FragmentTransaction fragmentTransaction = mFragmentManager.beginTransaction();
+        for(int i = 0 ;i < mFragmentTags.size(); i++){
+            Fragment ft = mFragmentManager.findFragmentByTag(mFragmentTags.get(i));
+            if(ft != null && ft.isAdded()){
+                fragmentTransaction.hide(ft);
+            }
+        }
+
+        if(fragment.isAdded()){
+            fragmentTransaction.show(fragment);
+        } else {
+            fragmentTransaction.replace(R.id.mFrameLayout,fragment,mFragmentTags.get(mCurrentIndex));
+        }
+
+        fragmentTransaction.commitAllowingStateLoss();
+        mFragmentManager.executePendingTransactions();
+    }
+
+    private Fragment initFragment(int current) {
+        switch (current){
+            case FRAGMENT_ZERO:
+                return  new CompeteHomeFragment();
+            case FRAGMENT_FIRST:
+                return new CompeteSubscribeFragment();
+            case FRAGMENT_SECOND:
+                return new CompeteTradeFragment();
+            case FRAGMENT_THREE:
+                return new CompeteCollectionFragment();
+            default:
+                return null;
+        }
     }
 
 }
