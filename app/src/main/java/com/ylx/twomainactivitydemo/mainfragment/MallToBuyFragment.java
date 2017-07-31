@@ -34,11 +34,6 @@ public class MallToBuyFragment extends Fragment {
     private final int FRAGMENT_THREE = 3;
     private FragmentManager mFragmentManager;
 
-    private final int CART_INDEX = 2;
-    private final int HOME_INDEX = 0;
-    private final String IS_SHOW_BACK = "is_show_back";
-    private final String MALL_CURRENT_FRAGMENT = "mall_current_fragment";
-
     private View mView;
 
     @Override
@@ -139,15 +134,48 @@ public class MallToBuyFragment extends Fragment {
     private Fragment initFragment(int current) {
         switch (current){
             case FRAGMENT_ZERO:
+                showClick();
                 return  new MallHomeFragment();
             case FRAGMENT_FIRST:
+                hiddenClick();
                 return new MallCategoryFragment();
             case FRAGMENT_SECOND:
+                hiddenClick();
                 return new MallCartFragment();
             case FRAGMENT_THREE:
+                hiddenClick();
                 return new MallAccountFragment();
             default:
                 return null;
         }
+    }
+
+    /**
+     * 隐藏事件
+     */
+    private void hiddenClick(){
+        if(onClickHiddenTabLayoutView != null){
+            onClickHiddenTabLayoutView.onHiddenClick();
+        }
+    }
+
+    /**
+     * 显示事件
+     */
+    private void showClick(){
+        if(onClickHiddenTabLayoutView != null){
+            onClickHiddenTabLayoutView.onShowClick();
+        }
+    }
+
+    private OnClickHiddenTabLayoutView onClickHiddenTabLayoutView;
+
+    public void setOnClickHiddenTabLayoutView(OnClickHiddenTabLayoutView onClickHiddenTabLayoutView){
+        this.onClickHiddenTabLayoutView = onClickHiddenTabLayoutView;
+    }
+
+    public interface OnClickHiddenTabLayoutView{
+        void onHiddenClick();
+        void onShowClick();
     }
 }

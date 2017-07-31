@@ -4,6 +4,8 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
+import java.util.List;
+
 /**
  * ========================================
  * <p/>
@@ -24,22 +26,21 @@ import android.support.v4.app.FragmentPagerAdapter;
 public class MyFragmentPagerAdapter extends FragmentPagerAdapter {
 
     private String[] titles = new String[]{"竞买", "购物"};
+    private List<Fragment> mFragments;
 
-    public MyFragmentPagerAdapter(FragmentManager fm) {
+    public MyFragmentPagerAdapter(FragmentManager fm, List<Fragment> mFragments) {
         super(fm);
+        this.mFragments = mFragments;
     }
 
     @Override
     public Fragment getItem(int position) {
-        if(position == 1){
-            return new MallToBuyFragment();
-        }
-        return new CompeteToBuyFragment();
+        return mFragments.get(position);
     }
 
     @Override
     public int getCount() {
-        return titles.length;
+        return mFragments.size();
     }
 
     /**
